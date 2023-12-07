@@ -8,25 +8,47 @@ import java.io.*;
 
 public class Main {
 
+    //Негатив картинки
+    public static void negativ4ik(BufferedImage image2){
+        int width = image2.getWidth();
+        int height = image2.getHeight();
+        for(int y = 0; y < height; y++){
+            for(int x = 0; x < width; x++){
+                int p1 = image2.getRGB(x,y);
+                int a = (p1>>24)&0xff;
+                int r = (p1>>16)&0xff;
+                int g1 = (p1>>8)&0xff;
+                int b = p1&0xff;
+                //subtract RGB from 255
+                r = 255 - r;
+                g1 = 255 - g1;
+                b = 255 - b;
+                //set new RGB value
+                p1 = (a<<24) | (r<<16) | (g1<<8) | b;
+                image2.setRGB(x, y, p1);
+            }
+        }
+    }
     private static class pictureBox extends JPanel {
         public BufferedImage image1;
         public BufferedImage image2;
         private Rectangle selection;
 
+
         public pictureBox() {
             try {
-                image1 = ImageIO.read(new File("/Users/coldmilka/Desktop/scp.jpg"));
+                image1 = ImageIO.read(new File("D:\\MyData\\Картинки\\grades.png"));
 
             } catch (IOException e) {
 
             }
             try {
-                image2 = ImageIO.read(new File("/Users/coldmilka/Desktop/testImage.jpg"));
+                image2 = ImageIO.read(new File("D:\\MyData\\Картинки\\zov.png"));
 
             } catch (IOException e) {
 
             }
-
+            negativ4ik(image2);
             addMouseListener(new MouseAdapter() {
                 private Point startPoint;
 
@@ -80,7 +102,7 @@ public class Main {
             p = h;
             hd = (int)Math.round(p/w * wd);
 
-            g.drawImage(image1, 10, 20, wd, hd, null);
+            g.drawImage(image1, 10, 20, w, h, null);
 
             int dx1,dy1,dx2,dy2;
             dx1 = 200;
@@ -99,6 +121,7 @@ public class Main {
             // Overlay image2 on the selected area
             if (selection != null && image2 != null) {
                 g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+
                 g2d.drawImage(image2, selection.x, selection.y, selection.width, selection.height, this);
             }
             g2d.dispose();
@@ -114,7 +137,7 @@ public class Main {
 
             pictureBox pc;
             pc = new pictureBox();
-            pc.setBounds(0, 0, 300, 300);
+            pc.setBounds(0, 0, 500, 500);
             frame.add(pc);
 
             frame.setVisible(true);
