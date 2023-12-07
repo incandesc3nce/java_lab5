@@ -8,6 +8,7 @@ import java.io.*;
 
 public class Main {
 
+
     //Негатив картинки
     public static void negativ4ik(BufferedImage image2){
         int width = image2.getWidth();
@@ -25,6 +26,7 @@ public class Main {
                 b = 255 - b;
                 //set new RGB value
                 p1 = (a<<24) | (r<<16) | (g1<<8) | b;
+                //image2
                 image2.setRGB(x, y, p1);
             }
         }
